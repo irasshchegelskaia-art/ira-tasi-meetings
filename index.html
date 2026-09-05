@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ира & Таси в Буханке ☕✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">☕ Ира & Та��и в Буханке</h1>
+                <p class="subtitle">Еженедельная традиция встреч на выходных</p>
+                <p class="tagline">✨ Кофе, беседы, смех и воспоминания ✨</p>
+            </div>
+            <div class="coffee-emoji">☕</div>
+        </header>
+
+        <!-- О встречах -->
+        <section class="about">
+            <h2>О нашей традиции 💕</h2>
+            <div class="about-text">
+                <p>Мы встречаемся каждую неделю, чтобы провести время вместе в уютном кафе "Буханка"</p>
+                <p>🌸 Смех, разговоры и горячий кофе — вот что делает эти встречи особенными</p>
+                <p>💫 Каждая встреча — это новые истории, внутренние шутки и моменты, которые мы будем помнить всегда</p>
+            </div>
+        </section>
+
+        <!-- Календарь -->
+        <section class="calendar-section">
+            <h2>📅 Календарь встреч</h2>
+            <div class="calendar-container">
+                <div id="calendar"></div>
+            </div>
+            <div class="legend">
+                <span class="legend-item"><span class="dot meeting-day"></span> Встреча подтверждена</span>
+                <span class="legend-item"><span class="dot possible-day"></span> Возможная встреча</span>
+                <span class="legend-item"><span class="dot busy-day"></span> Ира занята</span>
+            </div>
+        </section>
+
+        <!-- Расписание Иры -->
+        <section class="schedule">
+            <h2>📚 Расписание Иры</h2>
+            <div class="schedule-grid">
+                <div class="day-schedule">
+                    <h3>ПОНЕДЕЛЬНИК</h3>
+                    <div class="free-time">🌙 Встреча возможна после 19:30</div>
+                    <div class="classes">
+                        <p>08:45-10:15 — Физ. культура, ленгоры</p>
+                        <p>12:35-14:05 — Современное естествознание</p>
+                        <p>14:55-16:25 — Информатика</p>
+                        <p>16:50-18:20 — Иностранный язык</p>
+                    </div>
+                </div>
+
+                <div class="day-schedule">
+                    <h3>ВТОРНИК</h3>
+                    <div class="free-time">🌙 Встреча возможна после 19:30</div>
+                    <div class="classes">
+                        <p>10:40-12:10 — Основы рос. государственности</p>
+                        <p>12:35-14:05 — Компьютерная вёрстка</p>
+                        <p>14:55-16:25 — История России/Русский язык</p>
+                        <p>16:50-18:20 — Мировая литература</p>
+                    </div>
+                </div>
+
+                <div class="day-schedule">
+                    <h3>СРЕДА</h3>
+                    <div class="free-time">🌙 Встреча возможна после 17:30</div>
+                    <div class="classes">
+                        <p>08:45-10:15 — Основы рос. государственности</p>
+                        <p>10:40-12:10 — Основы медиакоммуникаций</p>
+                        <p>12:35-14:05 — Иностранный язык</p>
+                        <p>15:00-16:30 — Физ. культура, ленгоры</p>
+                    </div>
+                </div>
+
+                <div class="day-schedule">
+                    <h3>ЧЕТВЕРГ</h3>
+                    <div class="free-time">🌙 Встреча возможна после 14:05</div>
+                    <div class="classes">
+                        <p>08:45-10:15 — Русский ��зык и культура речи</p>
+                        <p>10:40-12:10 — Правоведение</p>
+                        <p>12:35-14:05 — История цифровых технологий</p>
+                    </div>
+                </div>
+
+                <div class="day-schedule">
+                    <h3>ПЯТНИЦА</h3>
+                    <div class="free-time">✨ Встреча возможна после 17:05</div>
+                    <div class="classes">
+                        <p>12:35-14:05 — История России</p>
+                        <p>14:55-16:25 — Иностранный язык</p>
+                    </div>
+                </div>
+
+                <div class="day-schedule weekend">
+                    <h3>🎉 СУББОТА - ИДЕАЛЬНО!</h3>
+                    <div class="free-time highlight">☕ Свободный день - встречаемся в Буханке!</div>
+                    <div class="classes">
+                        <p>09:00-10:30 — Экономика</p>
+                        <p>12:35-14:05 — Основы высшей математики</p>
+                        <p>14:55-16:25 — Русский язык</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Фотогалерея -->
+        <section class="gallery">
+            <h2>📸 Моменты вместе</h2>
+            <div class="gallery-grid">
+                <div class="photo-placeholder">
+                    <span>☕</span>
+                    <p>Первая встреча</p>
+                </div>
+                <div class="photo-placeholder">
+                    <span>😂</span>
+                    <p>Смешные моменты</p>
+                </div>
+                <div class="photo-placeholder">
+                    <span>🌸</span>
+                    <p>Весенний кофе</p>
+                </div>
+                <div class="photo-placeholder">
+                    <span>💕</span>
+                    <p>Тепло и уют</p>
+                </div>
+                <div class="photo-placeholder">
+                    <span>🎂</span>
+                    <p>Особые дни</p>
+                </div>
+                <div class="photo-placeholder">
+                    <span>✨</span>
+                    <p>Магические встречи</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Цитаты и фразы -->
+        <section class="quotes">
+            <h2>💬 Наши фразы</h2>
+            <div class="quotes-grid">
+                <div class="quote">
+                    <p>"Кофе вкуснее, когда его пьешь вместе" ☕</p>
+                </div>
+                <div class="quote">
+                    <p>"Встречи с Таси/Ирой — мой любимый день в неделе" 💕</p>
+                </div>
+                <div class="quote">
+                    <p>"В Буханке всегда уютнее" 🏠</p>
+                </div>
+                <div class="quote">
+                    <p>"Это не просто встреча — это традиция" 🌸</p>
+                </div>
+                <div class="quote">
+                    <p>"Каждый выходной начинается с кофе и смеха" 😂</p>
+                </div>
+                <div class="quote">
+                    <p>"Буханка — наше место" ✨</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты и информация -->
+        <section class="info">
+            <h2>📍 Информация</h2>
+            <div class="info-content">
+                <div class="info-card">
+                    <h3>🕐 Когда встречаемся?</h3>
+                    <p>По выходным (суббота-воскресенье)</p>
+                    <p>Ира свободна спустя 1 час после последнего занятия</p>
+                </div>
+                <div class="info-card">
+                    <h3>☕ Где встречаемся?</h3>
+                    <p>Кафе "Буханка"</p>
+                    <p>Уютное, красивое и очень вкусное место ✨</p>
+                </div>
+                <div class="info-card">
+                    <h3>💌 Давайте общаться!</h3>
+                    <p>Напиши Ире или Таси</p>
+                    <p>Планируй встречу, которую ты обязательно не пропустишь!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="footer">
+            <p>💕 Ира & Таси — встречаемся в Буханке каждый выходной 💕</p>
+            <p class="footer-emoji">☕ ✨ 🌸 💫 🎉</p>
+            <p class="footer-small">Сделано с любовью для наших встреч ✨</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
