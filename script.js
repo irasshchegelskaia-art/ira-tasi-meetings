@@ -9,8 +9,14 @@ const schedule = {
     'Sunday': { end: null, freeAfter: null }
 };
 
-// Дни встреч (примеры)
-const meetingDays = new Set();
+// Выбранные дни
+let selectedMeetings = {
+    ira: new Set(),
+    tasi: new Set()
+};
+
+// Текущий пользователь
+let currentUser = null;
 
 // Функция для создания календаря
 function createCalendar(year, month) {
@@ -47,21 +53,38 @@ function createCalendar(year, month) {
         const date = new Date(year, month, day);
         const dayOfWeek = date.getDay();
         const dayName = getDayName(dayOfWeek);
+        const dateKey = `${year}-${month}-${day}`;
         
         let dayClass = 'day';
         let title = '';
 
-        // Суббота и воскресенье - идеальные дни для встреч
-        if (dayOfWeek === 6 || dayOfWeek === 0) {
-            dayClass += ' possible-day';
-            title = 'Выходной - можно встретиться! 🎉';
+        // Проверяем выбор
+        const iraSelected = selectedMeetings.ira.has(dateKey);
+        const tasiSelected = selectedMeetings.tasi.has(dateKey);
+
+        // Если обе выбрали - встреча подтверждена
+        if (iraSelected && tasiSelected) {
+            dayClass += ' meeting-day';
+            title = '✨ Встреча подтверждена! ✨';
+        } else if (iraSelected) {
+            dayClass += ' ira-selected';
+            title = '💕 Ира выбрала эту дату';
+        } else if (tasiSelected) {
+            dayClass += ' tasi-selected';
+            title = '💕 Таси выбрала эту дату';
         } else {
-            dayClass += ' busy-day';
-            title = `Ира занята до ${schedule[dayName].freeAfter}`;
+            // Суббота и воскресенье - идеальные дни для встреч
+            if (dayOfWeek === 6 || dayOfWeek === 0) {
+                dayClass += ' possible-day';
+                title = 'Выходной - можно встретиться! 🎉';
+            } else {
+                dayClass += ' busy-day';
+                title = `Ира занята до ${schedule[dayName].freeAfter}`;
+            }
         }
 
         calendarHTML += `
-            <div class="${dayClass}" title="${title}">
+            <div class="${dayClass}" title="${title}" data-date="${dateKey}" data-day="${day}" data-month="${month}" data-year="${year}">
                 ${day}
             </div>
         `;
@@ -91,6 +114,13 @@ function getDayName(dayOfWeek) {
     return days[dayOfWeek];
 }
 
+function getFormattedDate(year, month, day) {
+    const date = new Date(year, month, day);
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const days = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'];
+    return `${days[date.getDay()]}, ${day} ${months[month]} ${year}`;
+}
+
 // Инициализация календаря
 function initCalendar() {
     const today = new Date();
@@ -114,6 +144,7 @@ function initCalendar() {
 
     // Добавляем интерактивность
     addCalendarInteractivity();
+    updateMeetingStatus();
 }
 
 function addCalendarInteractivity() {
@@ -121,29 +152,143 @@ function addCalendarInteractivity() {
     
     days.forEach(day => {
         day.addEventListener('click', function() {
-            if (this.classList.contains('possible-day')) {
-                this.classList.toggle('meeting-day');
+            if (!currentUser) {
+                showNotification('Пожалуйста, выбери своё имя вверху! 👆', 'warning');
+                return;
             }
-        });
 
-        day.addEventListener('mouseenter', function() {
-            if (this.classList.contains('possible-day') || this.classList.contains('busy-day')) {
-                this.style.opacity = '0.8';
+            const dateKey = this.getAttribute('data-date');
+            const year = parseInt(this.getAttribute('data-year'));
+            const month = parseInt(this.getAttribute('data-month'));
+            const dayNum = parseInt(this.getAttribute('data-day'));
+
+            // Если это день встречи и пользователь не выбирал его
+            if (this.classList.contains('meeting-day')) {
+                showNotification('✨ Встреча уже подтверждена! Не требуется никаких действий', 'success');
+                return;
             }
-        });
 
-        day.addEventListener('mouseleave', function() {
-            this.style.opacity = '1';
+            // Проверяем занятость Иры
+            if (this.classList.contains('busy-day')) {
+                showNotification('Ира занята в этот день 😿 Выбери выходной!', 'warning');
+                return;
+            }
+
+            // Переключаем выбор
+            if (selectedMeetings[currentUser].has(dateKey)) {
+                selectedMeetings[currentUser].delete(dateKey);
+            } else {
+                selectedMeetings[currentUser].add(dateKey);
+            }
+
+            // Переинициализируем календарь
+            initCalendar();
+            
+            // Проверяем, подтверждена ли встреча
+            const formattedDate = getFormattedDate(year, month, dayNum);
+            if (selectedMeetings.ira.has(dateKey) && selectedMeetings.tasi.has(dateKey)) {
+                showNotification(`🎉 Встреча подтверждена на ${formattedDate}! Встречаемся в Буханке! ☕`, 'success');
+                scheduleNotification(year, month, dayNum);
+            } else {
+                showNotification(`${currentUser === 'ira' ? '💕 Ира' : '💕 Таси'} выбрала ${formattedDate}!`, 'success');
+            }
         });
     });
 }
 
-// Инициализируем календарь при загрузке
+function updateMeetingStatus() {
+    const statusEl = document.getElementById('meetingStatus');
+    const confirmedMeetings = Array.from(selectedMeetings.ira).filter(date => selectedMeetings.tasi.has(date));
+    
+    if (confirmedMeetings.length > 0) {
+        const nextMeeting = confirmedMeetings[0];
+        const [year, month, day] = nextMeeting.split('-').map(Number);
+        const formattedDate = getFormattedDate(year, month, day);
+        statusEl.innerHTML = `✨ Следующая встреча: <strong>${formattedDate}</strong> в Буханке! ☕`;
+        statusEl.classList.add('confirmed');
+    } else {
+        statusEl.innerHTML = '';
+        statusEl.classList.remove('confirmed');
+    }
+}
+
+function showNotification(message, type = 'success') {
+    const container = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
+
+function scheduleNotification(year, month, day) {
+    // Устанавливаем уведомление за день до встречи
+    const meetingDate = new Date(year, month, day);
+    const notificationDate = new Date(meetingDate.getTime() - 24 * 60 * 60 * 1000);
+    
+    // Проверяем, поддерживает ли браузер Notification API
+    if ('Notification' in window && Notification.permission === 'granted') {
+        // Используем простую систему уведомлений через LocalStorage
+        const meetingData = {
+            date: `${year}-${month}-${day}`,
+            title: '☕ Напоминание о встречи в Буханке!',
+            body: `Завтра в ${new Date(year, month, day).toLocaleDateString('ru-RU')} вы встречаетесь в Буханке! 💕`
+        };
+        
+        // Сохраняем в localStorage
+        const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+        meetings.push(meetingData);
+        localStorage.setItem('meetings', JSON.stringify(meetings));
+    }
+}
+
+// Инициализируем при загрузке
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализируем календарь
     initCalendar();
+
+    // Выбор пользователя
+    const userButtons = document.querySelectorAll('.user-btn');
+    userButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const user = this.getAttribute('data-user');
+            currentUser = user;
+            
+            // Обновляем активную кнопку
+            userButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Обновляем текст
+            const nameDisplay = document.getElementById('selectedUser');
+            nameDisplay.textContent = user === 'ira' ? '👩 Ты Ира' : '👩 Ты Таси';
+            
+            // Обновляем навбар
+            const navNames = document.querySelectorAll('.navbar .name');
+            navNames.forEach(name => {
+                if ((user === 'ira' && name.textContent.includes('Ира')) || 
+                    (user === 'tasi' && name.textContent.includes('Таси'))) {
+                    name.classList.add('selected');
+                } else {
+                    name.classList.remove('selected');
+                }
+            });
+            
+            showNotification(`Привет, ${user === 'ira' ? 'Ира' : 'Таси'}! Выбери удобную дату для встречи! 💕`);
+        });
+    });
 
     // Добавляем немного магии на странице
     addPageAnimations();
+
+    // Запрашиваем разрешение на уведомления
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
 });
 
 function addPageAnimations() {
@@ -179,6 +324,13 @@ style.textContent = `
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideOut {
+        to {
+            transform: translateX(400px);
+            opacity: 0;
         }
     }
 `;
