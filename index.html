@@ -9,10 +9,20 @@
 </head>
 <body>
     <div class="container">
+        <!-- Навигация с именами -->
+        <nav class="navbar">
+            <div class="navbar-names">
+                <span class="name ira-name">👩 Ира</span>
+                <span class="heart">💕</span>
+                <span class="name tasi-name">👩 Таси</span>
+            </div>
+            <div class="navbar-title">встречаемся в Буханке ☕</div>
+        </nav>
+
         <!-- Шапка -->
         <header class="header">
             <div class="header-content">
-                <h1 class="title">☕ Ира & Та��и в Буханке</h1>
+                <h1 class="title">☕ Ира & Таси в Буханке</h1>
                 <p class="subtitle">Еженедельная традиция встреч на выходных</p>
                 <p class="tagline">✨ Кофе, беседы, смех и воспоминания ✨</p>
             </div>
@@ -24,19 +34,35 @@
             <h2>О нашей традиции 💕</h2>
             <div class="about-text">
                 <p>Мы встречаемся каждую неделю, чтобы провести время вместе в уютном кафе "Буханка"</p>
-                <p>🌸 Смех, разговоры и горячий кофе — вот что делает эти встречи особенными</p>
+                <p>🌸 Смех, разг��воры и горячий кофе — вот что делает эти встречи особенными</p>
                 <p>💫 Каждая встреча — это новые истории, внутренние шутки и моменты, которые мы будем помнить всегда</p>
             </div>
+        </section>
+
+        <!-- Выбор пользователя -->
+        <section class="user-select">
+            <h2>👤 Кто ты?</h2>
+            <div class="user-buttons">
+                <button class="user-btn" data-user="ira">👩 Я Ира</button>
+                <button class="user-btn" data-user="tasi">👩 Я Таси</button>
+            </div>
+            <p class="selected-user" id="selectedUser"></p>
         </section>
 
         <!-- Календарь -->
         <section class="calendar-section">
             <h2>📅 Календарь встреч</h2>
+            <div class="calendar-info">
+                <p class="calendar-instruction">Выбери дату встречи — когда обе согласны, встреча подтвердится! ✨</p>
+                <div class="meeting-status" id="meetingStatus"></div>
+            </div>
             <div class="calendar-container">
                 <div id="calendar"></div>
             </div>
             <div class="legend">
-                <span class="legend-item"><span class="dot meeting-day"></span> Встреча подтверждена</span>
+                <span class="legend-item"><span class="dot meeting-day"></span> Встреча подтверждена (обе выбрали)</span>
+                <span class="legend-item"><span class="dot ira-selected"></span> Выбрала Ира</span>
+                <span class="legend-item"><span class="dot tasi-selected"></span> Выбрала Таси</span>
                 <span class="legend-item"><span class="dot possible-day"></span> Возможная встреча</span>
                 <span class="legend-item"><span class="dot busy-day"></span> Ира занята</span>
             </div>
@@ -81,17 +107,20 @@
 
                 <div class="day-schedule">
                     <h3>ЧЕТВЕРГ</h3>
-                    <div class="free-time">🌙 Встреча возможна после 14:05</div>
+                    <div class="free-time">✨ Встреча возможна после 15:05</div>
                     <div class="classes">
-                        <p>08:45-10:15 — Русский ��зык и культура речи</p>
+                        <p>08:45-10:15 — Русский язык и культура речи</p>
                         <p>10:40-12:10 — Правоведение</p>
                         <p>12:35-14:05 — История цифровых технологий</p>
+                    </div>
+                    <div class="suggestion-box">
+                        <p>💡 Первая встреча: <strong>ЧЕТВЕРГ в 16:30</strong> для обсуждения планов? ☕</p>
                     </div>
                 </div>
 
                 <div class="day-schedule">
                     <h3>ПЯТНИЦА</h3>
-                    <div class="free-time">✨ Встреча возможна после 17:05</div>
+                    <div class="free-time">✨ Встреча возможна после 17:25</div>
                     <div class="classes">
                         <p>12:35-14:05 — История России</p>
                         <p>14:55-16:25 — Иностранный язык</p>
@@ -106,6 +135,11 @@
                         <p>12:35-14:05 — Основы высшей математики</p>
                         <p>14:55-16:25 — Русский язык</p>
                     </div>
+                </div>
+
+                <div class="day-schedule weekend">
+                    <h3>🌙 ВОСКРЕСЕНЬЕ</h3>
+                    <div class="free-time highlight">☕ Полностью свободный день!</div>
                 </div>
             </div>
         </section>
@@ -172,7 +206,7 @@
             <div class="info-content">
                 <div class="info-card">
                     <h3>🕐 Когда встречаемся?</h3>
-                    <p>По выходным (суббота-воскресенье)</p>
+                    <p>По выходным (суббота-воскресенье) или в удобное время</p>
                     <p>Ира свободна спустя 1 час после последнего занятия</p>
                 </div>
                 <div class="info-card">
@@ -181,12 +215,16 @@
                     <p>Уютное, красивое и очень вкусное место ✨</p>
                 </div>
                 <div class="info-card">
-                    <h3>💌 Давайте общаться!</h3>
-                    <p>Напиши Ире или Таси</p>
-                    <p>Планируй встречу, которую ты обязательно не пропустишь!</p>
+                    <h3>💌 Как выбрать встречу?</h3>
+                    <p>1. Выбери свое имя вверху</p>
+                    <p>2. Кликни на удобную дату в календаре</p>
+                    <p>3. Когда обе согласны - встреча подтверждена!</p>
                 </div>
             </div>
         </section>
+
+        <!-- Уведомления -->
+        <div id="notificationContainer" class="notification-container"></div>
 
         <!-- Футер -->
         <footer class="footer">
